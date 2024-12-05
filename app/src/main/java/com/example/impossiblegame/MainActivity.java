@@ -5,16 +5,30 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String THEME_PREF = "theme_pref";
     private static final String STATS_PREF = "stats_pref";
+    private SharedPreferences themeSettings;
+    private SharedPreferences.Editor settingsEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        applyTheme();
+
+        themeSettings = getSharedPreferences(THEME_PREF, MODE_PRIVATE);
+
+        if (!themeSettings.contains("MODE_NIGHT_ON")) {
+            settingsEditor = themeSettings.edit();
+            settingsEditor.putBoolean("MODE_NIGHT_ON", false);
+            settingsEditor.apply();
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else {
+            setCurrentTheme();
+        }
+
         setContentView(R.layout.activity_main);
 
         Button btnPlayWithBot = findViewById(R.id.btn_play_with_bot);
@@ -39,19 +53,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeTheme() {
-        SharedPreferences preferences = getSharedPreferences(THEME_PREF, MODE_PRIVATE);
-        boolean isDarkTheme = preferences.getBoolean("isDarkTheme", false);
-        preferences.edit().putBoolean("isDarkTheme", !isDarkTheme).apply();
+        settingsEditor = themeSettings.edit();
+        boolean isNightModeOn = themeSettings.getBoolean("MODE_NIGHT_ON", false);
+        settingsEditor.putBoolean("MODE_NIGHT_ON", !isNightModeOn);
+        settingsEditor.apply();
+
+        if (!isNightModeOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         recreate();
     }
 
-    private void applyTheme() {
-        SharedPreferences preferences = getSharedPreferences(THEME_PREF, MODE_PRIVATE);
-        boolean isDarkTheme = preferences.getBoolean("isDarkTheme", false);
-        if (isDarkTheme) {
-            setTheme(R.style.AppTheme_Dark);
+    private void setCurrentTheme() {
+        boolean isNightModeOn = themeSettings.getBoolean("MODE_NIGHT_ON", false);
+        if (isNightModeOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
-            setTheme(R.style.AppTheme);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 

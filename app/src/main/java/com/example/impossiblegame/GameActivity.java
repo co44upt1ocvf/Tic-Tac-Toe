@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -40,8 +41,8 @@ public class GameActivity extends AppCompatActivity {
     private void onButtonClick(int index) {
         if (buttons[index].getText().toString().isEmpty()) {
             if (isPlayerTurn) {
-                buttons[index].setText("X");
-                if (checkForWin("X")) {
+                buttons[index].setText("O");
+                if (checkForWin("O")) {
                     playerWins++;
                     updateStats();
                     resetGame();
@@ -56,8 +57,8 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
             } else {
-                buttons[index].setText("O");
-                if (checkForWin("O")) {
+                buttons[index].setText("X");
+                if (checkForWin("X")) {
                     botWins++;
                     updateStats();
                     resetGame();
@@ -73,9 +74,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void botMove() {
-        Move bestMove = minimax(buttons, 5, false);
-        buttons[bestMove.index].setText("O");
-        if (checkForWin("O")) {
+        Move bestMove = findBestMove();
+        buttons[bestMove.index].setText("X");
+        if (checkForWin("X")) {
             botWins++;
             updateStats();
             resetGame();
@@ -88,42 +89,13 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private Move minimax(Button[] currentBoard, int depth, boolean isMaximizing) {
-        if (checkForWin("O")) return new Move(-10 + depth, -1);
-        if (checkForWin("X")) return new Move(10 - depth, -1);
-        if (isBoardFull()) return new Move(0, -1);
-
-        if (isMaximizing) {
-            int bestScore = Integer.MIN_VALUE;
-            int bestMove = -1;
-            for (int i = 0; i < 9; i++) {
-                if (currentBoard[i].getText().toString().isEmpty()) {
-                    currentBoard[i].setText("O");
-                    Move score = minimax(currentBoard, depth - 1, false);
-                    currentBoard[i].setText("");
-                    if (score.score > bestScore) {
-                        bestScore = score.score;
-                        bestMove = i;
-                    }
-                }
+    private Move findBestMove() {
+        for (int i = 0; i < 9; i++) {
+            if (buttons[i].getText().toString().isEmpty()) {
+                return new Move(0, i);
             }
-            return new Move(bestScore, bestMove);
-        } else {
-            int bestScore = Integer.MAX_VALUE;
-            int bestMove = -1;
-            for (int i = 0; i < 9; i++) {
-                if (currentBoard[i].getText().toString().isEmpty()) {
-                    currentBoard[i].setText("X");
-                    Move score = minimax(currentBoard, depth - 1, true);
-                    currentBoard[i].setText("");
-                    if (score.score < bestScore) {
-                        bestScore = score.score;
-                        bestMove = i;
-                    }
-                }
-            }
-            return new Move(bestScore, bestMove);
         }
+        return new Move(0, -1);
     }
 
     private boolean checkForWin(String player) {
@@ -175,11 +147,11 @@ public class GameActivity extends AppCompatActivity {
 
     private void applyTheme() {
         SharedPreferences preferences = getSharedPreferences(THEME_PREF, MODE_PRIVATE);
-        boolean isDarkTheme = preferences.getBoolean("isDarkTheme", false);
-        if (isDarkTheme) {
-            setTheme(R.style.AppTheme_Dark);
+        boolean isNightModeOn = preferences.getBoolean("MODE_NIGHT_ON", false);
+        if (isNightModeOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
-            setTheme(R.style.AppTheme);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 
