@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <GridLayout
+        android:id="@+id/grid_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="3">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:textSize="24sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:textSize="24sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:textSize="24sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:textSize="24sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:textSize="24sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:textSize="24sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:textSize="24sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+        <Button
+            android:id="@+id/button8"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:textSize="24sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/button9"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:textSize="24sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/txt_stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wins: 0, Losses: 0, Draws: 0"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        tools:ignore="HardcodedText" />
+</LinearLayout>
